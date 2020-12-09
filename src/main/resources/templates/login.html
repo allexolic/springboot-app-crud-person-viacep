@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layoutPadrao">
+<head>
+	<title>Login Page</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="panel col-md-5" style="margin-top: 100px;">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Login page</div>
+				<div class="panel-body">
+					<form th:action="@{/login}" method="post">
+						<div class="form-group has-feedback">
+							<label for="username">Usuário</label>
+							<input type="text" class="form-control" id="username" name="username"
+								   autofocus="autofocus" autocomplete="off"/>								   
+						</div>
+						<div class="form-group has-feedback">
+							<label for="password">Senha</label>
+							<input type="password" class="form-control" id="password" name="password"/>
+						</div>	
+						<span class="alert-danger" th:text="${error}"></span>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						
+						<div class="row">
+							<div class="form-group col-xs-offset-8 col-xs-4">
+								<button type="submit" class="btn btn-primary btn-block btn-flat">
+									Login
+								</button>
+							</div>
+						</div>					
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layoutPadrao">
+<head>
+    <title>Usuário</title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="card" style="margin-top: 100px;">
+			<div class="card-header">
+				Cadastro de usuários
+			</div>
+			<div class="card-body">
+			<h5 class="card-title">Usuário</h5>
+				<form name="inserirUsuario" th:action="@{/usuario/salvar}" th:object="${userForm}" method="post">
+					<input type="hidden" th:field="*{id}">
+					<div class="form-row">					
+						<div class="form-group col-md-4">
+						    <label for="username">usuário</label>
+							<input type="text" class="form-control" id="username" autocomplete="off" th:field="*{username}">
+							<div class="alert-danger" th:if="${#fields.hasErrors('username')}"
+							     th:errors="*{username}"></div>
+						</div>			
+					    <div class="form-group col-md-3" th:if="${id == null}">
+					    	<label for="password">senha</label>
+						    <input type="password" class="form-control" id="password" maxlength="255"
+						           th:field="*{password}" th:readonly="${id != null}">
+						    <div class="alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>       
+					    </div>
+						<div class="form-group col-md-4">
+							<label for="permissao">Perfil acesso</label>
+							<select class="form-control" id="permissao" th:field="*{roles}">
+								<option value="">Selecione</option>
+								<option th:each="permissoes : ${ListaPermissoes}"
+										th:text="${permissoes.nome}"
+										th:value="${permissoes.id}">
+								</option>
+							</select>
+						</div>	    
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-4">
+							<label for="statusUsuario">Status</label>
+							<select class="form-control" id="statusUsuario" th:field="*{ativo}">
+								<option value=1>Ativo</option>
+								<option value=0>Inativo</option>								
+							</select>
+						</div>
+					</div>
+				  
+				  <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				  <a th:href="@{/usuario}" class="btn btn-danger btn-sm">Voltar</a>
+				</form>
+					
+			</div>
+		</div>
+	
+	</div>
+
+</body>
+</html>

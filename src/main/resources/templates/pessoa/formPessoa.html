@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layoutPadrao">
+<head>
+	<title>Pessoa</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/assets/css/formPessoa.css}"/>	
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="card" style="margin-top: 100px;">
+				<div class="card-header">
+					Cadastro de pessoas
+				</div>
+			<div class="card-body">
+			<h5 class="card-title">Pessoa</h5>
+			<ul class="nav nav-tabs tabs">
+			  <li class="nav-item tab-item tab-border" id="tab-1">
+			    <a class="nav-link active" href="#pes">Pessoa</a>
+			  </li>
+			  <li class="nav-item tab-item" id="tab-2">
+			    <a class="nav-link" href="#out">Dados pessoais</a>
+			  </li>
+			  <li class="nav-item tab-item" id="tab-3">
+			    <a class="nav-link" href="#cco">Dados Bancários</a>
+			  </li>
+			</ul>
+				<form th:action="@{/pessoas/salvar}" method="post">
+					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{address.id}"></input>
+					
+					<div class="tab-content-item show" id="tab-1-content">
+						<div class="tab-1-content-inner">
+							<div class="form-row">
+								<div class="form-group col-md-5">
+								    <label for="nomePessoa">Nome</label>
+								    <input type="text" class="form-control" id="nomePessoa" th:field="*{pessoa.nome}" 
+								           maxlength="175"/>								    
+								 		<p class="alert-danger" th:if="${#fields.hasErrors('pessoa.nome')}" th:errors="*{pessoa.nome}"></p>      								
+								</div>
+						
+							    <div class="form-group col-md-2">
+								    <label for="nuCpf">CPF</label>
+								    <input type="text" class="form-control" id="nuCpf" maxlength="14"
+								           th:field="*{pessoa.nuCpf}" />
+										<p class="alert-danger" th:if="${#fields.hasErrors('pessoa.nuCpf')}" 
+								    	   th:errors="*{pessoa.nuCpf}"></p> 								          
+							    </div>
+							    <div class="form-group col-md-2">
+							    	<label for="nuCep">CEP</label>
+							    	<input type="text" class="form-control" id="nuCep" maxlength="8" 
+							    		   th:field="*{pessoa.address.nuCep}"/>
+							    </div>
+								<div class="form-group col-md-2" style="margin-top:32px;">							
+									<button id="btnConsultaCEP" type="button" class="form-control btn-primary" 
+									       onclick="consultaCep()">Consultar CEP</button>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="nmLogradouro">Logradouro</label>
+									<input type="text" class="form-control" id="nmLogradouro" readonly="readonly" 
+									       th:field="*{pessoa.address.nmLogradouro}"></input>
+								</div>
+								<div class="form-group col-md-1">
+									<label for="nuEndereco">Número</label>
+									<input type="text" class="form-control" id="nuEndereco" th:field="*{pessoa.nuEndereco}"></input>
+								</div>
+								<div class="form-group col-md-4">
+									<label for="nmComplemento">Complemento</label>
+									<input type="text" class="form-control" id="nmComplemento" th:field="*{pessoa.nmComplemento}"></input>
+								</div>						
+							</div>
+						    <div class="form-row">
+						    	<div class="form-group col-md-4">
+						    		<label for="nmBairro">Bairro</label>
+						    		<input type="text" class="form-control" id="nmBairro" readonly="readonly"
+						    		       th:field="*{pessoa.address.nmBairro}"></input>
+						    	</div>
+						    	<div class="form-group col-md-5">
+						    		<label for="nmLocalidade">Localidade</label>
+						    		<input type="text" class="form-control" id="nmLocalidade" readonly="readonly"
+						    		       th:field="*{pessoa.address.nmLocalidade}"></input>
+						    	</div>	
+						    	<div class="form-group col-md-2">
+						    		<label for="nmUf">UF</label>
+						    		<input type="text" class="form-control" id="nmUf" readonly="readonly"
+						    		       th:field="*{pessoa.address.nmUf}"></input>
+						    	</div>					    				    	
+						    </div>
+						</div>	
+					</div> 
+				    <div class="tab-content-item" id="tab-2-content">
+						<div class="tab-2-content-top"> 
+							<div class="form-row">
+								<div class="form-group col-md-5">
+									<label for="nmEmail">Email</label>
+									<input type="email" class="form-control" id="nmEmail" th:field="*{pessoa.nmEmail}" 
+									       maxlength="175"></input>									    
+									    <p class="alert-danger" th:if="${#fields.hasErrors('pessoa.nmEmail')}" 
+									       th:errors="*{pessoa.nmEmail}"></p>									   
+								</div>
+								<div class="form-group col-md-2">
+									<label for="dtNascimento">Data Nascimento</label>
+									<input type="date" class="form-control" id="dtNascimento" th:field="*{pessoa.dtNascimento}">
+								</div>
+							</div>	
+						</div>
+					</div>	 
+				    <div class="tab-content-item" id="tab-3-content">
+						<div class="tab-3-content-top"> 
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label for="banco">Banco</label>
+									<select id="banco" class="form-control">
+										<option value="">Selecione</option>
+										<option th:each="listBanco : ${bancos}"
+										        th:value="${listBanco.id}"
+										        th:text="${listBanco.cdBanco} + '-' + ${listBanco.nmBanco}"></option>
+									</select>
+								</div>
+								<div class="form-group col-md-1">
+									<label for="nuAgencia">Agência</label>
+									<input type="text" id="nuAgencia" class="form-control" th:field="*{pessoaBanco.nuAgencia}"
+									       th:value="${pessoaBanco.nuAgencia}"/>
+								</div>
+								<div class="form-group col-md-3">
+									<label for="nuContaCorrente">Conta</label>
+									<input type="text" class="form-control" id="nuContaCorrente" />									    
+									    								   
+								</div>
+								<a type="submit" th:href="@{/pessoas/pessoaBanco/{id}(id=${pessoa.id})}">
+									<i class="fa fa-plus-circle" aria-hidden="true"></i>
+								</a>
+								
+							</div>	
+							<div class="form-row">
+								<div class="col-sm">
+									<table class="table table-bordered table-hover table-sm">
+										<thead>
+											<tr class="table-active">
+												<th>Banco</th>
+												<th>Agência</th>
+												<th>Conta</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="pessoaBanco : ${pessoaCBanco}">
+												<td th:text="${pessoaBanco.banco.nmBanco}"></td>
+												<td th:text="${pessoaBanco.nuAgencia}"></td>
+												<td th:text="${pessoaBanco.nuContaCorrente}"></td>
+												
+											</tr>
+										</tbody>
+									</table>
+								</div>		
+							</div>
+						</div>
+					</div>						
+				  <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				  <a th:href="@{/pessoas}" class="btn btn-danger btn-sm">Voltar</a>
+				</form>
+					
+			</div>
+		</div>
+	
+	</div>
+<th:block layout:fragment="javascript-controle">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script th:src="@{/assets/js/consulta-cep.js}"></script>
+	<script th:src="@{/assets/js/main.js}"></script>
+
+</th:block>	
+	
+</body>
+</html>

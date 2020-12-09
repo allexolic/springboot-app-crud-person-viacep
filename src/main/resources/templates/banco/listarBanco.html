@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layoutPadrao">
+<head>
+	<title>Listar Bancos</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="card" style="margin-top: 100px;">
+				<div class="card-header">
+					Lista de Bancos
+				</div>
+				<div class="card-body">
+				<div class="row">
+					<div class="col-sm">
+					
+						<table class="table table-bordered table-hover table-sm">
+							<thead>
+								<tr class="table-active">
+									<th>Código</th>
+									<th>Nome banco</th>
+									<th>Cod. Banco</th>
+									<th>Gerenciar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="banco : ${pagina.conteudo}">
+									<td th:text="${banco.id}"></td>
+									<td th:text="${banco.nmBanco}"></td>
+									<td th:text="${banco.cdBanco}"></td>
+									<td>
+										<a th:href="@{/banco/edit/{id}(id=${banco.id})}"><i class="fa fa-edit"></i></a>
+										<a href="#"><i class="fa fa-trash"></i></a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="9" th:if="${pagina.vazia}">
+										Nenhum registro encontrado!
+									</td>
+								</tr>								
+							</tbody>
+						</table>
+						<div th:replace="/paginacao :: Pagination(${pagina})"></div>
+					</div>	
+				</div>	
+				</div>		
+		</div>
+			
+		<a class="btn btn-primary btn-sm" th:href="@{/bancos/novo}">Cadastrar</a>
+	</div>
+	
+ 
+</body>
+
+</html>

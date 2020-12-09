@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layoutPadrao">
+<head>
+	<title>Banco</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="card" style="margin-top: 100px;">
+				<div class="card-header">
+					Cadastro de Bancos
+				</div>
+			<div class="card-body">
+			<h5 class="card-title">Banco</h5>
+				<form th:action="@{/bancos/salvar}" th:object="${banco}" method="post">
+					<input type="hidden" th:field="*{id}"></input>
+					<div class="form-row">
+						<div class="form-group col-md-5">
+						    <label for="nmBanco">Nome Banco</label>
+						    <input type="text" class="form-control" id="nmBanco" th:field="*{nmBanco}" 
+						           maxlength="175"/>						    
+						    	<p class="alert-danger" th:if="${#fields.hasErrors('nmBanco')}" 
+						    	   th:errors="*{nmBanco}"></p>								
+						</div>
+						
+						<div class="form-group col-md-2">
+							<label for="cdBanco">Código Banco</label>
+							<input type="text" class="form-control" id="cdBanco" maxlength="3"
+							       th:field="*{cdBanco}" />      
+								<p class="alert-danger" th:if="${#fields.hasErrors('cdBanco')}" 
+								   th:errors="*{cdBanco}"></p>    
+						</div>						
+					</div>
+			
+				  <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+				  <a th:href="@{/bancos}" class="btn btn-danger btn-sm">Voltar</a>
+				</form>
+					
+			</div>
+		</div>
+	
+	</div>
+<th:block layout:fragment="javascript-controle">
+
+</th:block>	
+	
+</body>
+</html>
