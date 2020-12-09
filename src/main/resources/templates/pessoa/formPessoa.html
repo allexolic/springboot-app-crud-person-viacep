@@ -28,7 +28,7 @@
 			  </li>
 			</ul>
 				<form th:action="@{/pessoas/salvar}" method="post">
-					<input type="hidden" th:field="*{id}"></input>
+					<input type="hidden" th:field="*{pessoa.id}"></input>
 					<input type="hidden" th:field="*{address.id}"></input>
 					
 					<div class="tab-content-item show" id="tab-1-content">
@@ -51,7 +51,7 @@
 							    <div class="form-group col-md-2">
 							    	<label for="nuCep">CEP</label>
 							    	<input type="text" class="form-control" id="nuCep" maxlength="8" 
-							    		   th:field="*{pessoa.address.nuCep}"/>
+							    		   th:field="*{address.nuCep}"/>
 							    </div>
 								<div class="form-group col-md-2" style="margin-top:32px;">							
 									<button id="btnConsultaCEP" type="button" class="form-control btn-primary" 
@@ -63,7 +63,9 @@
 								<div class="form-group col-md-6">
 									<label for="nmLogradouro">Logradouro</label>
 									<input type="text" class="form-control" id="nmLogradouro" readonly="readonly" 
-									       th:field="*{pessoa.address.nmLogradouro}"></input>
+									       th:field="*{address.nmLogradouro}" />
+										<p class="alert-danger" th:if="${#fields.hasErrors('address.nmLogradouro')}" 
+								    	   th:errors="*{address.nmLogradouro}"></p>       
 								</div>
 								<div class="form-group col-md-1">
 									<label for="nuEndereco">Número</label>
@@ -78,17 +80,17 @@
 						    	<div class="form-group col-md-4">
 						    		<label for="nmBairro">Bairro</label>
 						    		<input type="text" class="form-control" id="nmBairro" readonly="readonly"
-						    		       th:field="*{pessoa.address.nmBairro}"></input>
+						    		       th:field="*{address.nmBairro}"></input>
 						    	</div>
 						    	<div class="form-group col-md-5">
 						    		<label for="nmLocalidade">Localidade</label>
 						    		<input type="text" class="form-control" id="nmLocalidade" readonly="readonly"
-						    		       th:field="*{pessoa.address.nmLocalidade}"></input>
+						    		       th:field="*{address.nmLocalidade}"></input>
 						    	</div>	
 						    	<div class="form-group col-md-2">
 						    		<label for="nmUf">UF</label>
 						    		<input type="text" class="form-control" id="nmUf" readonly="readonly"
-						    		       th:field="*{pessoa.address.nmUf}"></input>
+						    		       th:field="*{address.nmUf}"></input>
 						    	</div>					    				    	
 						    </div>
 						</div>	

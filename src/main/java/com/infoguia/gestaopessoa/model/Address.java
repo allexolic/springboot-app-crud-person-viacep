@@ -8,6 +8,8 @@ import javax.persistence.Id;
 
 
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,6 +27,8 @@ public class Address {
 	@Column(unique=true)
 	private String nuCep;
 	
+	@NotNull(message="Consulte um CEP Valido!")
+	@NotEmpty(message="Consulte um CEP Valido!")
 	private String nmLogradouro;
 	
 	private String nmBairro;

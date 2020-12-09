@@ -1,6 +1,6 @@
 package com.infoguia.gestaopessoa.controller;
 
- 
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -72,14 +72,18 @@ public class PessoaController {
 	@GetMapping("/novo")
 	public String novoPessoa(Model model) {
 		model.addAttribute("pessoa", new Pessoa());
+		model.addAttribute("address", new Address());
+		model.addAttribute("pessoaBanco", new PessoaBanco());
 		
 		return "pessoa/formPessoa";
 	}
 	
 	@PostMapping(value = "/salvar")
-	public String salvar(@Valid @ModelAttribute("pessoa") Pessoa pessoa, BindingResult result, Address address) {
-		
-		if(result.hasErrors()) {
+	public String salvar(@Valid @ModelAttribute("pessoa") Pessoa pessoa, BindingResult result,
+			             @Valid @ModelAttribute("address") Address address, BindingResult result2, 
+			             PessoaBanco pessoaBanco) throws Exception {
+
+		if(result.hasErrors() || result2.hasErrors()) {
 			
 			return "pessoa/formPessoa";
 		
@@ -92,8 +96,7 @@ public class PessoaController {
 			
 			pessoaService.editar(pessoa, address);
 			
-		}
-	 
+		}	 
 		return "redirect:/pessoas";
 		
 	}
@@ -105,6 +108,7 @@ public class PessoaController {
 		mv.addObject("bancos", bancos.findAll());
 		mv.addObject(pessoa); 	
 		mv.addObject(pessoaBanco);
+		mv.addObject("address", pessoa.getAddress());
 		mv.addObject("newPessoaBanco", new PessoaBanco());
 		mv.addObject("pessoaCBanco", pessoaBancos.findByPessoaId(pessoa.getId()));
 		

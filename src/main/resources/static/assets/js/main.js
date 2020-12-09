@@ -3,7 +3,7 @@ const tabContentItems = document.querySelectorAll('.tab-content-item');
 const navLink = document.querySelectorAll('.nav-link');
 
 //Select tab content item
-function selectItem(e){
+function selectItem(){
     removeBorder();
     removeAtiveNav();
     removeShow();
