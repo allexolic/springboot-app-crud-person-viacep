@@ -14,11 +14,11 @@ import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 @Configuration
 @ConditionalOnClass(value=org.thymeleaf.templatemode.TemplateMode.class)
 public class WebConfig implements WebMvcConfigurer{
-	
+
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("index");
-		registry.addViewController("/login").setViewName("login");
+		//registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/home").setViewName("home");
 	}
 
