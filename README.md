@@ -5,6 +5,6 @@ Bootstrap
 Thymeleaf
 
 Cadastro basico de pessoa
-Consulta CEP utilizando a API https://viacep.com.br/ws/
+Consulta CEP utilizando a API https://viacep.com.br/
 
 
