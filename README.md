@@ -1,10 +1,7 @@
-# gestao-pessoas
-Projeto Java Spring boot
+# Spring Boot Java API + integration webservice ViaCEP
+Project Java Spring boot + Bootstrap + Thymeleaf
 
-Bootstrap
-Thymeleaf
+Simple CRUD integrated with webservice ViaCEP https://viacep.com.br/
 
-Cadastro basico de pessoa
-Consulta CEP utilizando a API https://viacep.com.br/
 
 
