@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 //import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ import com.infoguia.gestaopessoa.validator.UserValidator;
 
 
 @Controller
+@Slf4j
 public class UsuarioController {
 
 	@Autowired
@@ -50,7 +52,7 @@ public class UsuarioController {
 		 		
 		if (error != null) {
 			model.addAttribute("error", "Your username and/or password is invalid.");
-			 System.out.println("ERRO = " + error);
+			log.error("Error = " + error);
 		}
 		
 		
