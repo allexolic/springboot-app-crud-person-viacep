@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 
 //import javax.validation.Valid;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,11 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.infoguia.gestaopessoa.controller.page.PageWrapper;
@@ -35,28 +31,25 @@ import com.infoguia.gestaopessoa.validator.UserValidator;
 @Slf4j
 public class UsuarioController {
 
-	@Autowired
 	private UserRepository users;
-	
-	@Autowired
 	private UserService usuarioService;
-	
-	@Autowired
 	private Permissoes permissoes;
+    private UserValidator userValidator;
 
-    @Autowired
-    private UserValidator userValidator;	
-	
+	public UsuarioController(UserRepository users, UserService usuarioService,
+							 Permissoes permissoes, UserValidator userValidator){
+		this.users = users;
+		this.usuarioService = usuarioService;
+		this.permissoes = permissoes;
+		this.userValidator = userValidator;
+	}
+
  	@GetMapping("/login")
-	public String login(Model model, String error){
-		 		
-		if (error != null) {
+	public String login(@RequestParam(name = "error", required = false) boolean error,
+						final Model model){
+		if(error)
 			model.addAttribute("error", "Your username and/or password is invalid.");
-			log.error("Error = " + error);
-		}
-		
-		
-		return "login";  
+		return "authentication/login";
 	}	
 	
 	@GetMapping("/usuario")
@@ -64,7 +57,7 @@ public class UsuarioController {
 		ModelAndView mv = new ModelAndView("usuario/listarUsuario");
 		
 		Pageable allUsuariosSortedById = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-													   Sort.by("id").descending());
+													   Sort.by("id"));
 		
 		PageWrapper<User> pageWrapper = new PageWrapper<>(
 				users.findAll(allUsuariosSortedById),httpServletRequest);
@@ -116,5 +109,4 @@ public class UsuarioController {
 		mv.addObject("ListaPermissoes", permissoes.findAll());
 		return mv;
 	}
-
 }

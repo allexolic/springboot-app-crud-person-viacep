@@ -2,8 +2,7 @@ package com.infoguia.gestaopessoa.service;
 
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,24 +19,27 @@ import com.infoguia.gestaopessoa.repository.UserRepository;
 
 @Service
 @Transactional
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService{
 
-	@Autowired
 	private UserRepository userRepository;
+
+	public UserDetailsServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		User user = userRepository.findByUsername(username);
 		
-		if(user == null)
+		if(user == null) {
+			log.error("User not found");
 			throw new UsernameNotFoundException(username);
-		
-		if(user.getAtivo() == 0) {
-			
-			throw new UsernameNotFoundException("Usuário Inativo");
 		}
-			
-					
+		if(!user.getAtivo()) {
+			log.warn("Inactive user trying access the app: " + username);
+			throw new UsernameNotFoundException("User deactivated: " + username);
+		}
 		return new org.springframework.security.core.userdetails.User(user.getUsername(),
 				user.getPassword(), getAuthorities(user));
 	}
@@ -46,11 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		// TODO Auto-generated method stub
 		String[] userRoles = user.getRoles().stream().map((role) -> role.getNome()).toArray(String[]::new);
 		Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
-		
 		return authorities;
 	}
-	
-
 }
 
 

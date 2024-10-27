@@ -1,5 +1,7 @@
 package com.infoguia.gestaopessoa;
 
+import com.infoguia.gestaopessoa.config.CustomAuthenticationFailureHandler;
+import com.infoguia.gestaopessoa.config.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -40,7 +44,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public AuthenticationManager userAuthenticationManager() throws Exception{
 		return authenticationManager();
 	}
-	
+
+	@Bean
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new CustomAuthenticationSuccessHandler();
+	}
+
+	@Bean
+	public AuthenticationFailureHandler authenticationFailureHandler() {
+		return new CustomAuthenticationFailureHandler();
+	}
+
 	@Override
 	public void configure(final HttpSecurity http) throws Exception {
 		http
@@ -50,18 +64,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.authorizeRequests()
 				.antMatchers("/resources/**", "/webjars/**", "/assets/**").permitAll()
 				.antMatchers("/").permitAll()
+				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/usuario").hasRole("ADMIN")
 				.antMatchers("/pessoas").hasAnyRole("ADMIN","USER")
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
 				.loginPage("/login")
-				.defaultSuccessUrl("/home")
+				.successHandler(authenticationSuccessHandler())
+				.failureHandler(authenticationFailureHandler())
+				.failureUrl("/login?error=true")
 				.permitAll()
 				.and()
 			.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/login");
+				.logoutSuccessUrl("/login")
+				.deleteCookies("JSESSIONID");
+		http.csrf().disable();
 	}
 	
 }

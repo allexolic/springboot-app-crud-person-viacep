@@ -37,7 +37,7 @@ public class User {
 	@Column(nullable=false, updatable=false)
 	private String password;
 	
-	private Integer ativo;
+	private boolean ativo;
 	
 	@ManyToMany(cascade=CascadeType.MERGE)
 	@JoinTable(name="inf_user_role",
@@ -71,11 +71,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer getAtivo() {
+	public boolean getAtivo() {
 		return ativo;
 	}
 
-	public void setAtivo(Integer ativo) {
+	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
 

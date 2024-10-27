@@ -12,7 +12,7 @@ public interface UserRepository  extends JpaRepository<User, Long>{
 	
 	@Modifying
 	@Query(value="update inf_user set ativo = ?1 where id = ?2", nativeQuery=true)
-	int atualizaUsuario(Integer ativo, Long id);
+	int atualizaUsuario(boolean ativo, Long id);
 	
 	@Modifying
 	@Query(value="update inf_user_role set role_id = ?1 where user_id = ?2 and role_id <> ?1",
