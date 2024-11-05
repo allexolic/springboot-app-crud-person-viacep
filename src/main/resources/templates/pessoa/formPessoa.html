@@ -28,16 +28,13 @@
 			  </li>
 			</ul>
 				<form th:action="@{/pessoas/salvar}" method="post">
-					<input type="hidden" th:field="*{pessoa.id}"></input>
-					<input type="hidden" th:field="*{address.id}"></input>
-					
 					<div class="tab-content-item show" id="tab-1-content">
 						<div class="tab-1-content-inner">
 							<div class="form-row">
 								<div class="form-group col-md-5">
 								    <label for="nomePessoa">Nome</label>
 								    <input type="text" class="form-control" id="nomePessoa" th:field="*{pessoa.nome}" 
-								           maxlength="175"/>								    
+								           maxlength="175"/>
 								 		<p class="alert-danger" th:if="${#fields.hasErrors('pessoa.nome')}" th:errors="*{pessoa.nome}"></p>      								
 								</div>
 						
@@ -52,6 +49,9 @@
 							    	<label for="nuCep">CEP</label>
 							    	<input type="text" class="form-control" id="nuCep" maxlength="8" 
 							    		   th:field="*{address.nuCep}"/>
+									<p class="alert-danger" th:if="${#fields.hasErrors('address.nuCep')}"
+										th:errors="*{address.nuCep}">
+									</p>
 							    </div>
 								<div class="form-group col-md-2" style="margin-top:32px;">							
 									<button id="btnConsultaCEP" type="button" class="form-control btn-primary" 
@@ -64,8 +64,8 @@
 									<label for="nmLogradouro">Logradouro</label>
 									<input type="text" class="form-control" id="nmLogradouro" readonly="readonly" 
 									       th:field="*{address.nmLogradouro}" />
-										<p class="alert-danger" th:if="${#fields.hasErrors('address.nmLogradouro')}" 
-								    	   th:errors="*{address.nmLogradouro}"></p>       
+										<p class="alert-danger" th:if="${#fields.hasErrors('address.nmLogradouro')}"
+								    	   th:errors="*{address.nmLogradouro}"></p>
 								</div>
 								<div class="form-group col-md-1">
 									<label for="nuEndereco">Número</label>
@@ -100,7 +100,7 @@
 							<div class="form-row">
 								<div class="form-group col-md-5">
 									<label for="nmEmail">Email</label>
-									<input type="email" class="form-control" id="nmEmail" th:field="*{pessoa.nmEmail}" 
+									<input type="email" class="form-control" id="nmEmail" th:field="*{pessoa.nmEmail}"
 									       maxlength="175"></input>									    
 									    <p class="alert-danger" th:if="${#fields.hasErrors('pessoa.nmEmail')}" 
 									       th:errors="*{pessoa.nmEmail}"></p>									   
@@ -117,11 +117,11 @@
 							<div class="form-row">
 								<div class="form-group col-md-4">
 									<label for="banco">Banco</label>
-									<select id="banco" class="form-control">
+									<select id="banco" th:field="*{pessoaBanco.id}" class="form-control">
 										<option value="">Selecione</option>
-										<option th:each="listBanco : ${bancos}"
-										        th:value="${listBanco.id}"
-										        th:text="${listBanco.cdBanco} + '-' + ${listBanco.nmBanco}"></option>
+										<option th:each="pessoaBanco : ${bancos}"
+										        th:value="${pessoaBanco.id}"
+										        th:text="${pessoaBanco.cdBanco} + '-' + ${pessoaBanco.nmBanco}"></option>
 									</select>
 								</div>
 								<div class="form-group col-md-1">
@@ -131,13 +131,14 @@
 								</div>
 								<div class="form-group col-md-3">
 									<label for="nuContaCorrente">Conta</label>
-									<input type="text" class="form-control" id="nuContaCorrente" />									    
-									    								   
+									<input type="text" class="form-control" id="nuContaCorrente" th:field="*{pessoaBanco.nuContaCorrente}"
+									th:value="${pessoaBanco.nuContaCorrente}"/>
 								</div>
+								<!--
 								<a type="submit" th:href="@{/pessoas/pessoaBanco/{id}(id=${pessoa.id})}">
 									<i class="fa fa-plus-circle" aria-hidden="true"></i>
 								</a>
-								
+								-->
 							</div>	
 							<div class="form-row">
 								<div class="col-sm">

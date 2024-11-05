@@ -26,9 +26,7 @@ public class Address {
 	
 	@Column(unique=true)
 	private String nuCep;
-	
-	@NotNull(message="Consulte um CEP Valido!")
-	@NotEmpty(message="Consulte um CEP Valido!")
+
 	private String nmLogradouro;
 	
 	private String nmBairro;

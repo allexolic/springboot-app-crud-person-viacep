@@ -1,6 +1,7 @@
 package com.infoguia.gestaopessoa.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,36 +12,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-
-
 import javax.persistence.Table;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
 @Table(name = "inf_pessoa")
 @DynamicUpdate
-public class Pessoa {
+public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull(message="Nome deve ser informado!")
-	@NotEmpty(message="Nome deve ser informado!")
-	@Column(name = "nm_pessoa", length = 175)
+
+	@Column(name = "nm_pessoa", length = 175, nullable = false)
 	private String nome;
 
-	@NotNull(message="Cpf deve ser informado!")
-	@NotEmpty(message="Cpf deve ser informado!")
-	@Pattern(regexp="[0-9][0-9][0-9].[0-9][0-9][0-9].[0-9][0-9][0-9]-[0-9][0-9]", message="cpf inválido!")
-	@Column(name = "nu_cpf", length = 14)
+	@Column(name = "nu_cpf", length = 14, nullable = false, unique = true)
 	private String nuCpf;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -53,7 +41,6 @@ public class Pessoa {
 	private String nuEndereco;
 	
 	private String nmEmail;
-	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dtNascimento;
 	

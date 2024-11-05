@@ -1,8 +1,10 @@
 package com.infoguia.gestaopessoa.repository;
 
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 
+import com.infoguia.gestaopessoa.controller.PessoaRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +33,7 @@ public interface Pessoas extends JpaRepository<Pessoa, Long> {
 	@Modifying
 	@Query(value="update inf_pessoa set address_id = ?1 where id = ?2", nativeQuery=true)
 	int atualizaPessoaCep(Long address, Long id);
+
+	@Query("select u from Pessoa u where u.nuCpf = ?1")
+    Pessoa findByNuCpf(String nuCpf);
 }

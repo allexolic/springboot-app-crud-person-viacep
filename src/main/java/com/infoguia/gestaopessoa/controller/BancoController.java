@@ -31,7 +31,7 @@ public class BancoController {
 		
 		Pageable allBancosSortedById = PageRequest.of(pageable.getPageNumber(), 
 				   pageable.getPageSize(), 
-				   Sort.by("id").descending());
+				   Sort.by("id"));
 
 		PageWrapper<Banco> pageWrapper = new PageWrapper<>(bancos.findAll(allBancosSortedById),
                      httpServletRequest);
